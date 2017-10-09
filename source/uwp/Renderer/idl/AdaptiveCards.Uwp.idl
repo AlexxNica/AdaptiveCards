@@ -307,6 +307,7 @@ namespace AdaptiveCards
         interface IAdaptiveCardElement : IInspectable
         {
             [propget] HRESULT ElementType([out, retval] ElementType* value);
+            [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
 
             [propget] HRESULT Spacing([out, retval] Spacing* value);
             [propput] HRESULT Spacing([in] Spacing value);
@@ -316,8 +317,6 @@ namespace AdaptiveCards
 
             [propget] HRESULT Id([out, retval] HSTRING* value);
             [propput] HRESULT Id([in] HSTRING value);
-
-            [propget] HRESULT ElementTypeString([out, retval] HSTRING* value);
         };
 
         [
@@ -445,8 +444,29 @@ namespace AdaptiveCards
         ]
         interface IAdaptiveCardStatics : IInspectable
         {
-            HRESULT FromJson([in] Windows.Data.Json.JsonObject* adaptiveJson, [out, retval] AdaptiveCardParseResult** card);
-            HRESULT FromJsonString([in] HSTRING adaptiveJson, [out, retval] AdaptiveCardParseResult** card);
+            [overload("FromJson")]
+            HRESULT FromJson(
+                [in] Windows.Data.Json.JsonObject* adaptiveJson, 
+                [out, retval] AdaptiveCardParseResult** card);
+
+            [overload("FromJson")]
+            HRESULT FromJsonWithParserRegistration(
+                [in] Windows.Data.Json.JsonObject* adaptiveJson, 
+                [in] AdaptiveElementParserRegistration* elementRegistration, 
+                [in] AdaptiveActionParserRegistration* actionRegistration, 
+                [out, retval] AdaptiveCardParseResult** card);
+
+            [overload("FromJsonString")]
+            HRESULT FromJsonString(
+                [in] HSTRING adaptiveJson, 
+                [out, retval] AdaptiveCardParseResult** card);
+
+            [overload("FromJsonString")]
+            HRESULT FromJsonStringWithParserRegistration(
+                [in] HSTRING adaptiveJson,
+                [in] AdaptiveElementParserRegistration* elementRegistration,
+                [in] AdaptiveActionParserRegistration* actionRegistration,
+                [out, retval] AdaptiveCardParseResult** card);
         };
 
         [

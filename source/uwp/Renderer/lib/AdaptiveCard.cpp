@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "AdaptiveCard.h"
 #include "AdaptiveCardParseResult.h"
+#include "AdaptiveActionParserRegistration.h"
 #include "AdaptiveElementParserRegistration.h"
 
 #include <json.h>
@@ -68,14 +69,27 @@ namespace AdaptiveCards { namespace Uwp
         IAdaptiveActionParserRegistration* actionParserRegistration, 
         IAdaptiveCardParseResult** parseResult)
     {
-        std::shared_ptr<ElementParserRegistration> sharedModelParserRegistration;
+        std::shared_ptr<ElementParserRegistration> sharedModelElementParserRegistration;
         if (elementParserRegistration != nullptr)
         {
             ComPtr<AdaptiveElementParserRegistration> elementParserRegistrationImpl = PeekInnards<AdaptiveElementParserRegistration>(elementParserRegistration);
-            sharedModelParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
+            if (elementParserRegistrationImpl != nullptr)
+            {
+                sharedModelElementParserRegistration = elementParserRegistrationImpl->GetSharedParserRegistration();
+            }
         }
 
-        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, sharedModelParserRegistration);
+        std::shared_ptr<ActionParserRegistration> sharedModelActionParserRegistration;
+        if (actionParserRegistration != nullptr)
+        {
+            ComPtr<AdaptiveActionParserRegistration> actionParserRegistrationImpl = PeekInnards<AdaptiveActionParserRegistration>(actionParserRegistration);
+            if (actionParserRegistrationImpl != nullptr)
+            {
+                sharedModelActionParserRegistration = actionParserRegistrationImpl->GetSharedParserRegistration();
+            }
+        }
+
+        std::shared_ptr<::AdaptiveCards::AdaptiveCard> sharedAdaptiveCard = ::AdaptiveCards::AdaptiveCard::DeserializeFromString(jsonString, sharedModelElementParserRegistration, sharedModelActionParserRegistration);
 
         ComPtr<IAdaptiveCard> adaptiveCard;
         RETURN_IF_FAILED(MakeAndInitialize<AdaptiveCard>(&adaptiveCard, sharedAdaptiveCard));

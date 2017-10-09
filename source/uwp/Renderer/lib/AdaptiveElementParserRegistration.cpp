@@ -11,6 +11,7 @@ namespace AdaptiveCards { namespace Uwp
 {
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration()
     {
+        m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
     }
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept try

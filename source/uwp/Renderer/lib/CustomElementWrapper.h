@@ -28,6 +28,5 @@ namespace AdaptiveCards { namespace Uwp
 
     private:
         Microsoft::WRL::ComPtr<ABI::AdaptiveCards::Uwp::IAdaptiveCardElement> m_cardElement;
-
     };
 }}

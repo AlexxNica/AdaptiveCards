@@ -71,6 +71,7 @@
     <ClCompile Include="lib\AdaptiveRenderArgs.cpp" />
     <ClCompile Include="lib\AdaptiveActionInvoker.cpp" />
     <ClCompile Include="lib\CustomElementWrapper.cpp" />
+    <ClCompile Include="lib\CustomActionWrapper.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="lib\AdaptiveCard.h" />
@@ -151,6 +152,7 @@
     <ClInclude Include="lib\AdaptiveRenderArgs.h" />
     <ClInclude Include="lib\AdaptiveActionInvoker.h" />
     <ClInclude Include="lib\CustomElementWrapper.h" />
+    <ClInclude Include="lib\CustomActionWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <Midl Include="idl\AdaptiveCards.Uwp.idl" />

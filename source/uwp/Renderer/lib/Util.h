@@ -91,6 +91,7 @@ HRESULT ProjectedElementTypeToHString(ABI::AdaptiveCards::Uwp::ElementType proje
 
 typedef Microsoft::WRL::EventSource<ABI::Windows::Foundation::ITypedEventHandler<ABI::AdaptiveCards::Uwp::RenderedAdaptiveCard*, ABI::AdaptiveCards::Uwp::AdaptiveActionEventArgs*>> ActionEventSource;
 
+// Peek interface to help get implementation types from winrt interfaces
 struct DECLSPEC_UUID("defc7d5f-b4e5-4a74-80be-d87bd50a2f45") ITypePeek : IUnknown
 {
     virtual void *PeekAt(REFIID riid) = 0;

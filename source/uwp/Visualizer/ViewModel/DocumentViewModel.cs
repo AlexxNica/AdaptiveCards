@@ -19,6 +19,17 @@ using AdaptiveCardVisualizer.ResourceResolvers;
 
 namespace AdaptiveCardVisualizer.ViewModel
 {
+    public class CustomParser : IAdaptiveElementParser
+    {
+        public IAdaptiveCardElement FromJson(JsonObject jsonObject)
+        {
+            AdaptiveTextBlock textBlock = new AdaptiveTextBlock();
+            textBlock.Text = "This is a custom element!";
+
+            return textBlock;
+        }
+    }
+
     public class DocumentViewModel : GenericDocumentViewModel
     {
         private static AdaptiveCardRenderer _renderer;
@@ -79,7 +90,14 @@ namespace AdaptiveCardVisualizer.ViewModel
                 JsonObject jsonObject;
                 if (JsonObject.TryParse(payload, out jsonObject))
                 {
-                    RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCardFromJson(jsonObject);
+                    CustomParser customParser = new CustomParser();
+
+                    AdaptiveElementParserRegistration parserRegistration = AdaptiveElementParserRegistration.GetDefault();
+                    parserRegistration.Set("textBlock", customParser);
+
+                    AdaptiveCardParseResult parseResult = AdaptiveCard.FromJson(jsonObject, parserRegistration, null);
+
+                    RenderedAdaptiveCard renderResult = _renderer.RenderAdaptiveCard(parseResult.AdaptiveCard);
                     if (renderResult.FrameworkElement != null)
                     {
                         RenderedCard = renderResult.FrameworkElement;

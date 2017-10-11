@@ -11,13 +11,19 @@ namespace AdaptiveCards { namespace Uwp
 {
     AdaptiveElementParserRegistration::AdaptiveElementParserRegistration()
     {
-        m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
+        m_registration = std::make_shared<RegistrationMap>();
     }
 
     HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize() noexcept try
     {
-        m_registration = std::make_shared<RegistrationMap>();
+        m_sharedParserRegistration = std::make_shared<ElementParserRegistration>();
 
+        return S_OK;
+    } CATCH_RETURN;
+
+    HRESULT AdaptiveElementParserRegistration::RuntimeClassInitialize(std::shared_ptr<ElementParserRegistration> sharedParserRegistration) noexcept try
+    {
+        m_sharedParserRegistration = sharedParserRegistration;
         return S_OK;
     } CATCH_RETURN;
 
@@ -66,7 +72,10 @@ namespace AdaptiveCards { namespace Uwp
     _Use_decl_annotations_
     HRESULT AdaptiveElementParserRegistrationStaticsImpl::GetDefault(IAdaptiveElementParserRegistration **result)
     {
-        //BECKYTODO
+        ComPtr<AdaptiveElementParserRegistration> defaultParserRegistration;
+        MakeAndInitialize<AdaptiveCards::Uwp::AdaptiveElementParserRegistration>(&defaultParserRegistration, AdaptiveCards::ElementParserRegistration::GetDefault());
+
+        *result = defaultParserRegistration.Detach();
         return S_OK;
     }
 

@@ -1664,7 +1664,8 @@ namespace AdaptiveCards
 
         [
             version(NTDDI_WIN10_RS1),
-            activatable(NTDDI_WIN10_RS1)
+            activatable(NTDDI_WIN10_RS1),
+            static(IAdaptiveElementParserRegistrationStatics, NTDDI_WIN10_RS1)
         ]
         runtimeclass AdaptiveElementParserRegistration
         {
